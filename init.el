@@ -47,7 +47,7 @@
 
 (require 'autoinsert)
 ;;template dir
-(setq auto-insert-directory "~/lisp/insert/")
+(setq auto-insert-directory "~/.emacs.d/site-lisp/insert/")
 ;;change template for file val
 (setq auto-insert-alist
       (nconc '(
