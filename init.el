@@ -97,16 +97,60 @@
           (lambda ()
             (setq indent-tabs-mode t)
             (setq tab-always-indent t)
+            (setq electric-indent-mode 1)
+            (setq tab-width 4)
+            (setq mode-require-final-newline nil)
             ))
 (add-hook 'nxml-mode-hook
           (lambda ()
-            (setq nxml-child-indent 0)
-            (setq indent-tabs-mode t) 
-           (setq tab-width 4)
+            (setq indent-tabs-mode t)
+            (setq electric-indent-mode 1)
+            (setq tab-width 4)
+            (setq turn-off-auto-fill)
+            (setq turn-off-auto-fill)
+            (setq mode-require-final-newline nil)
             ))
 (add-hook 'js-mode-hook
           (lambda ()
             (setq indent-tabs-mode t)
-            (setq tab-always-indent)
+            (setq electric-indent-mode 1)
             (setq tab-width 4)
-           ))
+            (setq turn-off-auto-fill)
+            (setq mode-require-final-newline nil)
+            ))
+(add-hook 'js2-mode-hook
+          (lambda ()
+            (setq indent-tabs-mode t)
+            (setq electric-indent-mode 1)
+            (setq tab-width 4)
+            (setq turn-off-auto-fill)
+            (setq mode-require-final-newline nil)
+            ))
+
+;; makeing AnguLar mode
+(defun Angular-mode ()
+  "Angular-mode"
+  (interactive)
+  (kill-all-local-variables)
+  (setq mode-name "Angular")
+  (setq major-mode 'angular-mode)
+  (run-hooks 'angular-mode-hook))
+
+(provide 'angular-mode)
+
+;;show eof
+(defun set-buffer-end-mark()
+  (let ((overlay (make-overlay (point-max) (point-max))))
+    (overlay-put overlay 'before-string #("<EOF>" 0 5 (face highlight)))
+    (overlay-put overlay 'insert-behind-hooks
+                 '((lambda (overlay after beg end &optional len)
+                     (when after
+                       (move-overlay overlay (point-max) (point-max))))))))
+(add-hook 'find-file-hooks 'set-buffer-end-mark)
+
+;;jshint
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
